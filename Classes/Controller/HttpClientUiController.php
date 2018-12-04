@@ -26,24 +26,26 @@ namespace TS\RestclientUi\Controller;
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TS\Restclient\Client\HttpClient;
 use TS\Restclient\Client\HttpClientRequest;
 use TS\Restclient\Client\HttpClientException;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /**
  * A REST client UI 
  */
 class HttpClientUiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
-  
-  /**
-	 * historyRepository
-	 *
-	 * @var \TS\RestclientUi\Domain\Repository\HistoryRepository
-	 * @inject
-	 */
-	protected $historyRepository = NULL;
+
+    /**
+     * historyRepository
+     *
+     * @Extbase\Inject
+     * @var \TS\RestclientUi\Domain\Repository\HistoryRepository
+     */
+    protected $historyRepository = NULL;
   
   protected $extConf = NULL;
   
@@ -55,7 +57,7 @@ class HttpClientUiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
   );
   
   public function initializeAction() {
-    $this -> extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['restclient_ui']);
+    $this -> extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('restclient_ui');
     
     if ($this -> extConf['history_storage'] !== "") {  
       $querySettings = $this -> historyRepository -> createQuery() -> getQuerySettings();
@@ -93,7 +95,7 @@ class HttpClientUiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
   }
   
   protected function getWsResponse($methodRequest, $urlRequest, $headerRequest, $dataRequest) {
-    $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['restclient_ui']);
+    $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('restclient_ui');
     
     $objectManager = GeneralUtility :: makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');  
     
@@ -255,7 +257,7 @@ class HttpClientUiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
   }
   
   public function sendRequest ($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {
-    $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['restclient_ui']);
+    $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('restclient_ui');
        
     $rcuiRequest = GeneralUtility :: _POST('tx_restclientui_tools_restclientuirestclientui');
     if (isset($rcuiRequest) && is_array($rcuiRequest) && isset($rcuiRequest['request']) && is_array($rcuiRequest['request'])) {

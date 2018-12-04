@@ -3,7 +3,6 @@ if (!defined('TYPO3_MODE')) {
   die('Access denied.');
 }
 
-
 if (TYPO3_MODE === 'BE') {
   \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
     'TS.' . $_EXTKEY,
@@ -22,7 +21,7 @@ if (TYPO3_MODE === 'BE') {
   );
 }
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler (
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
   'HttpClientUiController::sendRequest',
   'TS\\RestclientUi\\Controller\\HttpClientUiController->sendRequest'
 );
@@ -52,6 +51,6 @@ $GLOBALS['TCA']['tx_restclientui_domain_model_history'] = array(
 		),
 		'searchFields' => 'url,method',
 		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/History.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_restclientui_domain_model_history.gif'
+		'iconfile' => \TYPO3\CMS\Core\Utility\PathUtility::getAbsoluteWebPath(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY, 'Resources/Public/Icons/tx_restclientui_domain_model_history.gif')),
 	),
 );

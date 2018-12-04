@@ -27,6 +27,10 @@ namespace TS\RestclientUi\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
+
 /**
  * HistoryController
  */
@@ -35,15 +39,15 @@ class HistoryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	/**
 	 * historyRepository
 	 *
+     * @Extbase\Inject
 	 * @var \TS\RestclientUi\Domain\Repository\HistoryRepository
-	 * @inject
 	 */
 	protected $historyRepository = NULL;
   
   protected $extConf = NULL;
   
   public function initializeAction() {
-    $this -> extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['restclient_ui']);
+    $this -> extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('restclient_ui');
     
     if ($this -> extConf['history_storage'] !== "") {  
       $querySettings = $this -> historyRepository -> createQuery() -> getQuerySettings();
