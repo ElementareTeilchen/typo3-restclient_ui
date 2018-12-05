@@ -21,10 +21,10 @@ if (TYPO3_MODE === 'BE') {
   );
 }
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
-  'HttpClientUiController::sendRequest',
-  'TS\\RestclientUi\\Controller\\HttpClientUiController->sendRequest'
-);
+//\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
+//  'HttpClientUiController::sendRequest',
+//  'TS\\RestclientUi\\Controller\\HttpClientUiController->sendRequest'
+//);
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_restclientui_domain_model_history', 'EXT:restclient_ui/Resources/Private/Language/locallang_csh_tx_restclientui_domain_model_history.xlf');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_restclientui_domain_model_history');
