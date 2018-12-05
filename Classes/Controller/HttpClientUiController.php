@@ -250,13 +250,14 @@ class HttpClientUiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
       $history -> setFields(serialize($data));
     }
     
-    $historyRepository = $objectManager -> get('TS\RestclientUi\Domain\Repository\HistoryRepository');        
+    $historyRepository = $objectManager -> get(\TS\RestclientUi\Domain\Repository\HistoryRepository::class);
     $historyRepository -> add($history);
-    $persistenceManager = $objectManager -> get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager'); 
+    $persistenceManager = $objectManager -> get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
     $persistenceManager -> persistAll();
   }
   
-  public function sendRequest ($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {
+//  public function sendRequest ($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {
+  public function sendRequest ($params = array(), &$ajaxObj = NULL) {
     $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('restclient_ui');
        
     $rcuiRequest = GeneralUtility :: _POST('tx_restclientui_tools_restclientuirestclientui');
