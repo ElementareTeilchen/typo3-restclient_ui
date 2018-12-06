@@ -18,7 +18,7 @@
       <span class="block rcui-header"><f:translate key="rcui.field.headers" /></span>      
       <div class="rcui-rows">
         <f:for each="{request.header}" key="key" as="header">
-          <div class="rcui-row"><f:form.textfield name="request[header][{key}]" class="w40" value="{header.name}" /><f:form.textfield name="request[header][{key -> rcui:math(params: {op: '++', value: key})}]" class="w40" value="{header.value}" /><f:form.button type="button" class="rcui-button-remove-header">-</f:form.button></div>
+          <div class="rcui-row"><f:form.textfield name="request[header][{key}]" class="w40" value="{header.name}" /><f:form.textfield name="request[header][{key + 1}]" class="w40" value="{header.value}" /><f:form.button type="button" class="rcui-button-remove-header">-</f:form.button></div>
         </f:for>      
         <f:form.button type="button" id="rcui-button-add-header">+</f:form.button>     
       </div>
@@ -27,7 +27,7 @@
       <span class="block rcui-header"><f:translate key="rcui.field.data" /></span>
       <div class="rcui-rows">
         <f:for each="{request.data}" key="key" as="data">
-          <div class="rcui-row"><f:form.textfield name="request[data][{key}]" class="w40" value="{data.name}" /><f:form.textfield name="request[data][{key -> rcui:math(params: {op: '++', value: key})}]" class="w40" value="{data.value}" /><f:form.button type="button" class="rcui-button-remove-data">-</f:form.button></div>
+          <div class="rcui-row"><f:form.textfield name="request[data][{key}]" class="w40" value="{data.name}" /><f:form.textfield name="request[data][{key + 1}]" class="w40" value="{data.value}" /><f:form.button type="button" class="rcui-button-remove-data">-</f:form.button></div>
         </f:for>  
         <f:form.button type="button" id="rcui-button-add-data">+</f:form.button>     
       </div>
