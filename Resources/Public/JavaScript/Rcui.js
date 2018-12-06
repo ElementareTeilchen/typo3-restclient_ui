@@ -1,4 +1,5 @@
-(function(jQuery){
+define(['jquery'], function(jQuery) {
+    
   jQuery(document).ready(function(){
     
     var init = function() {
@@ -46,7 +47,7 @@
       
       //Submit request
       jQuery("#rcui-button-go").click(function(){
-        
+
         var $rcuiInputUrl = jQuery("#rcui-input-url"),
           templateMessage = jQuery("#rcui-template-messsage").html(), 
           templateResponse = jQuery("#rcui-template-response").html(),
@@ -59,34 +60,36 @@
           $rcuiInputUrl.focus();          
           return false;
         }
-          
+
         jQuery.post(
-          TYPO3.settings.ajaxUrls["HttpClientUiController::sendRequest"], 
+          TYPO3.settings.ajaxUrls["HttpClientUiController_sendRequest"], 
           jQuery("#rcui-request").serialize(),
           function(info) {
-            $rcuiResponse.empty();//reset            
-            if (info['response']['status']['success'] === true) {
+
+            $rcuiResponse.empty();//reset
+
+            if (info['status']['success'] === true) {
               $rcuiResponse.append("<div id='rcui-response-details'></div>");              
               $rcuiResponseDetails = jQuery("#rcui-response-details");
-              $rcuiResponseDetails.append(templateResponse.replace("###HEADER###", "Status").replace("###TEXT###", "<strong>"+info['response']['data']['httpCode']+"</strong>"));
-              $rcuiResponseDetails.append(templateResponse.replace("###HEADER###", "Time").replace("###TEXT###", "Connection: "+info['response']['data']['connectionTime']+"<br/>Transfer: "+info['response']['data']['totalTime']));
-              for (var indexHeader in info['response']['data']['header']) {
+              $rcuiResponseDetails.append(templateResponse.replace("###HEADER###", "Status").replace("###TEXT###", "<strong>"+info['data']['httpCode']+"</strong>"));
+              $rcuiResponseDetails.append(templateResponse.replace("###HEADER###", "Time").replace("###TEXT###", "Connection: "+info['data']['connectionTime']+"<br/>Transfer: "+info['data']['totalTime']));
+              for (var indexHeader in info['data']['header']) {
                 if (indexHeader === "Status-Code") {
-                  contentHeader += info['response']['data']['header'][indexHeader]+"<br/>";
+                  contentHeader += info['data']['header'][indexHeader]+"<br/>";
                 }
                 else {
-                  if (indexHeader !== "" && info['response']['data']['header'][indexHeader] !=="") {                                  
-                    contentHeader += indexHeader + ": " +info['response']['data']['header'][indexHeader]+"<br/>";
+                  if (indexHeader !== "" && info['data']['header'][indexHeader] !=="") {                                  
+                    contentHeader += indexHeader + ": " +info['data']['header'][indexHeader]+"<br/>";
                   }
                 }
               }
               $rcuiResponseDetails.append(templateResponse.replace("###HEADER###", "Headers").replace("###TEXT###", contentHeader));
-              $rcuiResponseDetails.append(templateResponse.replace("###HEADER###", "Body").replace("###TEXT###", info['response']['data']['body']));
+              $rcuiResponseDetails.append(templateResponse.replace("###HEADER###", "Body").replace("###TEXT###", info['data']['body']));
             }
             else {
               $rcuiResponse.append("<div id='rcui-response-message'></div>");              
               $rcuiResponseMessage = jQuery("#rcui-response-message");              
-              $rcuiResponseMessage.append(templateMessage.replace("###HEADER###", "Oops! Something went wrong...").replace("###TEXT###", "Errors details: "+info['response']['status']['message']));
+              $rcuiResponseMessage.append(templateMessage.replace("###HEADER###", "Oops! Something went wrong...").replace("###TEXT###", "Errors details: "+info['status']['message']));
             }
             $rcuiResponse.append("<button type='button' id='rcui-button-close-response' class='button-action'>Close</button>");            
             jQuery("#rcui-response-header")[0].scrollIntoView();            
@@ -99,4 +102,4 @@
     init();
   });
   
-}(TYPO3.jQuery || jQuery));
+});

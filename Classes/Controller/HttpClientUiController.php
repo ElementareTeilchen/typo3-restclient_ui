@@ -33,6 +33,8 @@ use TS\Restclient\Client\HttpClient;
 use TS\Restclient\Client\HttpClientRequest;
 use TS\Restclient\Client\HttpClientException;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * A REST client UI 
@@ -129,7 +131,7 @@ class HttpClientUiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
           continue;
         }        
       }       
-      $httpClientRequest -> setFields($data);
+      $httpClientRequest -> setData($data);
     }      
     
     //Client    
@@ -256,8 +258,7 @@ class HttpClientUiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
     $persistenceManager -> persistAll();
   }
   
-//  public function sendRequest ($params = array(), \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj = NULL) {
-  public function sendRequest ($params = array(), &$ajaxObj = NULL) {
+  public function sendRequest (ServerRequestInterface $request, ResponseInterface $response) {
     $extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('restclient_ui');
        
     $rcuiRequest = GeneralUtility :: _POST('tx_restclientui_tools_restclientuirestclientui');
@@ -272,14 +273,14 @@ class HttpClientUiController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
         if ($extConf['history_storage'] !== "") $historyStorage = intval($extConf['history_storage']);
         $this -> setHistory($methodRequest, $urlRequest, $headerRequest, $dataRequest, $historyStorage); 
       }
-      $response = $this -> getWsResponse($methodRequest, $urlRequest, $headerRequest, $dataRequest);
+      $wsResponse = $this -> getWsResponse($methodRequest, $urlRequest, $headerRequest, $dataRequest);
+      $response->getBody()->write(\GuzzleHttp\json_encode($wsResponse));
     }
     else {
-      $response = array('status'=> array('success' => false));
+      $response->getBody()->write(\GuzzleHttp\json_encode(array('status'=> array('success' => false))));
     }
     
-    $ajaxObj->setContentFormat('json');
-    $ajaxObj->addContent('response', $response);
+    return $response;
   } 
   
 }
